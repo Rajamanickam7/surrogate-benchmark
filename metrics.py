@@ -1,4 +1,3 @@
-"""Accuracy metrics for surrogate predictions on a held-out test set."""
 import numpy as np
 
 
@@ -17,7 +16,6 @@ def r2(y_true, y_pred):
 
 
 def nrmse(y_true, y_pred):
-    """RMSE divided by the std of the true values, comparable across functions."""
     return rmse(y_true, y_pred) / float(np.std(y_true))
 
 

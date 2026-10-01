@@ -1,7 +1,3 @@
-"""Analytic test functions with known global minima.
-
-Each function takes X with shape (n, d) and returns an array of shape (n,).
-"""
 import numpy as np
 
 

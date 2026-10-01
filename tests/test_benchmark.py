@@ -22,7 +22,6 @@ def test_lhs_inside_bounds_and_stratified():
     X = lhs(bounds, 20, seed=0)
     assert X.shape == (20, 2)
     assert np.all(X >= bounds[:, 0]) and np.all(X <= bounds[:, 1])
-    # Latin Hypercube: exactly one point per stratum in each dimension
     unit = (X - bounds[:, 0]) / (bounds[:, 1] - bounds[:, 0])
     for d in range(2):
         assert sorted(np.floor(unit[:, d] * 20).astype(int)) == list(range(20))

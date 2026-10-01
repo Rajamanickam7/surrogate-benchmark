@@ -1,8 +1,3 @@
-"""Direct optimization vs one-shot surrogate-based optimization.
-
-Cost is measured in true-function evaluations, because in real engineering
-use each evaluation is a simulation run that dominates wall-clock time.
-"""
 import numpy as np
 from scipy.optimize import minimize
 
@@ -11,8 +6,6 @@ from surrogates import SURROGATES
 
 
 class CountedFunction:
-    """Wraps f(X) so it can be called on a single point and counts calls."""
-
     def __init__(self, f):
         self.f = f
         self.n_evals = 0
@@ -26,11 +19,6 @@ class CountedFunction:
 
 
 def run_direct(problem, method, seed, max_evals=500):
-    """Run a SciPy local optimizer from a random start point.
-
-    L-BFGS-B uses finite-difference gradients here, and those extra
-    evaluations are counted too.
-    """
     rng = np.random.default_rng(seed)
     bounds = problem["bounds"]
     x0 = rng.uniform(bounds[:, 0], bounds[:, 1])
@@ -41,8 +29,6 @@ def run_direct(problem, method, seed, max_evals=500):
 
 
 def run_surrogate_opt(problem, surrogate_name, n_train, seed, n_starts=10):
-    """Fit a surrogate on an LHS design, minimise it, then evaluate the true f
-    once at the surrogate's optimum. Total cost = n_train + 1 evaluations."""
     bounds = problem["bounds"]
     X = lhs(bounds, n_train, seed=seed)
     y = problem["f"](X)
@@ -56,5 +42,5 @@ def run_surrogate_opt(problem, surrogate_name, n_train, seed, n_starts=10):
     x_best = min(results, key=lambda r: r.fun).x
 
     f_true = float(problem["f"](x_best[None, :])[0])
-    best_f = min(f_true, float(y.min()))  # the training samples count as candidates too
+    best_f = min(f_true, float(y.min()))
     return {"n_evals": n_train + 1, "best_f": best_f, "gap": best_f - problem["f_min"]}

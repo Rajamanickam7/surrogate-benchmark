@@ -1,4 +1,3 @@
-"""Run the full benchmark and write CSVs + plots to results/."""
 from pathlib import Path
 import time
 import warnings
@@ -21,9 +20,6 @@ N_TEST = 500
 DIRECT_METHODS = ["Nelder-Mead", "L-BFGS-B"]
 OUT = Path("results")
 
-# The GP hyperparameter search (L-BFGS-B on the log marginal likelihood) sometimes
-# stops with an "ABNORMAL" line search when a parameter hits its bound. The
-# n_restarts_optimizer restarts make this harmless, so keep the output readable.
 warnings.filterwarnings("ignore", module="sklearn.gaussian_process")
 
 
